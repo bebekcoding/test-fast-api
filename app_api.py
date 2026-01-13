@@ -3,6 +3,7 @@ from model.simple_model import MyModel
 import torch
 from typing import List
 from utils import config
+from pathlib import Path
 
 # load model
 model = MyModel(
@@ -28,6 +29,18 @@ def predict(features: list[float]):
         prediction = torch.argmax(output, dim=1).item()
 
     return post_processing(prediction)
+
+@myapp.get("/health")
+def check_health():
+    checkpoint_path = "checkpoints\checkpoints-1000.pth"
+
+    checkpoint_file = Path(checkpoint_path)
+
+    if checkpoint_file.is_file():
+        return {"is_checkpoint_exist": True}
+    else:
+        return {"is_checkpoint_exist": False}
+
 
 
 def post_processing(class_id: int) -> dict:
