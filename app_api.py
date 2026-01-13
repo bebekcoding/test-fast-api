@@ -27,4 +27,14 @@ def predict(features: list[float]):
 
         prediction = torch.argmax(output, dim=1).item()
 
-    return {"class_id": prediction}
+    return post_processing(prediction)
+
+
+def post_processing(class_id: int) -> dict:
+    if class_id == 0:
+        return {"class_name": "anjing"}
+    elif class_id == 1:
+        return {"class_name": "kucing"}
+    elif class_id == 2:
+        return {"class_name": "burung"}
+
